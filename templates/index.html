@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SUMMIFY</title>
+  <link href="https://fonts.googleapis.com/css2?family=Play&display=swap" rel="stylesheet">
+  <link href="static/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="static/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/unicons.css"/>
+  <style>
+    body {
+      background-color: rgb(48 99 101);
+      font-family: 'Play', sans-serif;
+    }
+    nav {
+      background-color: #263238; /* Dark Blue-Grey */
+    }
+    nav a, nav .brand-logo {
+      color: #ffffff !important;
+      font-weight: 500;
+      font-size: 1.5rem;
+    }
+    nav a:hover, nav .brand-logo:hover {
+      color: #00acc1 !important;
+    }
+    #logo-container {
+      font-size: 2rem;
+    }
+    .section-solutions-about {
+      background-color: #fafafa;
+      color: #000000;
+    }
+    .card {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .card-title {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #333333;
+    }
+    .input-field label {
+      color: #000000;
+    }
+    .input-field input[type=text]:focus + label,
+    .input-field input[type=url]:focus + label,
+    .input-field textarea:focus + label {
+      color: #00acc1;
+    }
+    .input-field input[type=text]:focus,
+    .input-field input[type=url]:focus,
+    .input-field textarea:focus {
+      border-bottom: 1px solid #00acc1;
+      box-shadow: 0 1px 0 0 #00acc1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="navbar-fixed">
+    <nav class="grey darken-4" role="navigation">
+      <div class="nav-wrapper container">
+        <a id="logo-container" href="#" class="brand-logo">SUMMIFY</a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="{{url_for('index')}}">HOME</a></li>
+        </ul>
+        <a href="#" data-target="nav-mobile" class="sidenav-trigger">MENU</a>
+      </div>
+    </nav>
+  </div>
+  
+  <ul id="nav-mobile" class="sidenav">
+    <li><a href="{{url_for('index')}}">HOME</a></li>
+  </ul>
+
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <div class="col s12 m6">
+          <div class="card">
+            <h4 class="card-title" align="center" style="color: rgb(0,0,0);">LINK</h4>
+            <form method="POST" action="/analyze_url">
+              <div class="input-field">
+                <input type="url" id="link" name="raw_url" class="validate" required="true">
+                <label for="link">Paste your link here</label>
+              </div>
+              <div class="flex-parent jc-center">
+                <button type="reset" class="btn btn-small waves-effect waves-light red lighten-1">CLEAR</button> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                <button type="submit" class="btn btn-small waves-effect waves-light light-blue lighten-1">SUMMARIZE</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col s12 m6">
+          <div class="card">
+            <h4 class="card-title" align="center" style="color: rgb(0,0,0);">TEXT</h4>
+            <form method="POST" action="/analyze">
+              <div class="input-field">
+                <textarea id="text" name="rawtext" class="materialize-textarea validate" required="true"></textarea>
+                <label for="text">Enter your text here</label>
+              </div>
+              <br/>
+              <div class="flex-parent jc-center">
+                <button type="reset" class="btn btn-small waves-effect waves-light red lighten-1">CLEAR</button> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                <button type="submit" class="btn btn-small waves-effect waves-light light-blue lighten-1">SUMMARIZE</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="section section-solutions-about">
+    <div class="container white-text">
+      <div class="row">
+        <div class="col s12 m6">
+          <div class="card">
+            <h4 class="card-title" align="center" style="color: rgb(0, 0, 0);">INPUT TEXT</h4>
+            <p style="color: rgb(0, 0, 0);">READING TIME: <span style="color:#1100ff;">{{ final_reading_time }} MINUTES </span></p>
+            <p style="color: rgb(0, 0, 0);">TOTAL WORDS: <span style="color:#1100ff;">{{ final_total_words }} WORDS </span></p>
+            <p class="light" style="color: #000000;">{{ctext}}</p>
+            <div class="alert alert-info" role="alert">
+              <p style="color: rgb(0, 0, 0);"><span style="color:#ff0000;"></span></p>
+              <br/>
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m6">
+          <div class="card">
+            <h4 class="card-title" align="center" style="color: rgb(0, 0, 0);">TEXT SUMMARY</h4>
+            <div class="" role="alert">
+              <p style="color: rgb(0, 0, 0);">READING TIME: <span style="color:#1100ff;">{{ summary_reading_time }} MINUTES </span></p>
+              <p style="color: rgb(0, 0, 0);">TOTAL WORDS: <span style="color:#1100ff;">{{ summary_total_words }} WORDS </span></p>
+            </div>
+            <p class="light" style="color: #000000;">{{ final_summary }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="static/js/materialize.js"></script>
+  <script src="static/js/init.js"></script>
+
+</body>
+</html>
